@@ -1,0 +1,21 @@
+{
+    "name": "robvanaarle/ultimo-http",
+    "description": "HTTP library",
+    "type": "library",
+    "keywords": [
+        "HTTP",
+        "SAPI"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+	  		{
+	    	  "name": "Rob van Aarle"
+	  		}
+	  ],
+    "autoload": {
+    		"psr-4": {
+       			"ultimo\\": "src/ultimo/"
+    		}
+  }
+}
+
