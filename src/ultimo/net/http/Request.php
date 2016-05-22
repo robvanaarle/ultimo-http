@@ -127,7 +127,7 @@ class Request {
     return $this;
   }
   
-   /**
+  /**
    * Adds a header.
    * @param Header|string $headerOrName Header object or header name.
    * @param string $value Header value, used only if first parameter is a header

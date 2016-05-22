@@ -66,9 +66,9 @@ abstract class Header {
    * @return Header Constructed header.
    */
   static public function fromHeader(Header $header) {
-    $header = new static();
-    $header->setValue($header->getHeaderValue());
-    return $header;
+    $result = new static();
+    $result->setHeaderValue($header->getHeaderValue());
+    return $result;
   }
 
   static protected function escapeValue($value) {

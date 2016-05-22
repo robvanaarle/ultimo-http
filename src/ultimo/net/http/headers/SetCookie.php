@@ -63,7 +63,7 @@ class SetCookie extends \ultimo\net\http\Header {
    * @param boolean $httpOnly When true the cookie will be made accessible only
    * through the http protocol.
    */
-  public function __construct($name, $value, $expire=0, $path='', $domain='', $secure='', $httpOnly='') {
+  public function __construct($name='', $value='', $expire=0, $path='', $domain='', $secure='', $httpOnly='') {
     $this->name = $name;
     $this->value = $value;
     $this->expire = $expire;
@@ -144,6 +144,44 @@ class SetCookie extends \ultimo\net\http\Header {
   }
   
   public function setHeaderValue($value) {
-    throw new Exception("Not implemented");
+    $pairs = explode(';', trim($value));
+    foreach ($pairs as $index => $pair) {
+      $items = explode('=', trim($pair));
+      
+      
+      if ($index == 0) {
+        if (count($items) == 1) {
+          $this->name = '';
+          $this->value = $items[0];
+        } else {
+          $this->name = $items[0];
+          $this->value = $items[1];
+        }
+      } else {
+        $name = strtolower($items[0]);
+        $value = '';
+        if (count($items) > 1) {
+          $value = $items[1];
+        }
+        
+        switch($name) {
+          case 'expire':
+            $this->expire = strtotime($value);
+            break;
+          case 'path':
+            $this->path = $value;
+            break;
+          case 'domain':
+            $this->domain = $value;
+            break;
+          case 'secure':
+            $this->secure = true;
+            break;
+          case 'httponly':
+            $this->httpOnly = true;
+            break;
+        }
+      }
+    }
   }
 }

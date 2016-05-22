@@ -50,6 +50,10 @@ class Curl implements \ultimo\net\http\Adapter {
       }
     );
     
+    if (isset($options['proxy'])) {
+      $curlOptions[CURLOPT_PROXY] = $options['proxy'];
+    }
+    
     if (isset($options['certificates'])) {
       $curlOptions[CURLOPT_CAINFO] = $options['certificates'];
     }
