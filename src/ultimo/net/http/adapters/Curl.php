@@ -53,7 +53,7 @@ class Curl implements \ultimo\net\http\Adapter {
     if (isset($options['proxy'])) {
       $curlOptions[CURLOPT_PROXY] = $options['proxy'];
     }
-    
+
     if (isset($options['certificates'])) {
       $curlOptions[CURLOPT_CAINFO] = $options['certificates'];
     }
@@ -79,8 +79,23 @@ class Curl implements \ultimo\net\http\Adapter {
     $handler = curl_init($url);
     curl_setopt_array($handler, $curlOptions);
     $rawResponse = curl_exec($handler);
+    $errorMessage = curl_error($handler);
+    $errorId = curl_errno($handler);
     curl_close($handler);
     
+    // check for errors
+    if ($errorId != 0) {
+        $code = \ultimo\net\http\HttpException::OTHER;
+        $mapping = array(
+            6 => \ultimo\net\http\HttpException::UNKNOWN_HOST,
+            7 => \ultimo\net\http\HttpException::UNABLE_TO_CONNECT
+        );
+        if (isset($mapping[$errorId])) {
+            $code = $mapping[$errorId];
+        }
+        
+        throw new \ultimo\net\http\HttpException($errorMessage, $code);
+    }
     
     
     // construct raw response, depening on whether it was stored to a file
